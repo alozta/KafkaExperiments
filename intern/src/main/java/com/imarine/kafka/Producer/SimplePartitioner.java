@@ -1,7 +1,11 @@
 /**
  * Created by alozta on 8/12/16.
+ *
+ * Simple partitioner for Kafka.
+ * Describes partition information.
+ * Used in Producer's partitioner.class section.
  */
-package com.alozta.Producer;
+package com.imarine.kafka.Producer;
 
 import kafka.producer.Partitioner;
 import kafka.utils.VerifiableProperties;
