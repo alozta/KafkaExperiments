@@ -1,35 +1,29 @@
-/**
- * Created by alozta on 8/15/16.
- *
- * Message consumer for Kafka.
- */
-
 package com.imarine.kafka.Consumer;
 
-import java.util.*;
-import kafka.consumer.Consumer;
-import kafka.consumer.ConsumerConfig;
 import kafka.consumer.ConsumerIterator;
 import kafka.consumer.KafkaStream;
-import kafka.javaapi.consumer.ConsumerConnector;
 
-public class ConsumerTest {
-    private ConsumerConnector consumerConnector = null;
-    private final String topic = "notification";        //partition name
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-    //SET PROPERTIES
-    public void initialize() {
-        Properties props = new Properties();
-        props.put("zookeeper.connect", "127.0.0.1:2181");   //default zookkeper ip: 127.0.0.1:2181
-        props.put("group.id", "testgroup");
-        props.put("zookeeper.session.timeout.ms", "6000");  //consumer did not work  if timeout is set to default 400, but it worked in 6000
-        props.put("zookeeper.sync.time.ms", "300");
-        props.put("auto.commit.interval.ms", "1000");
-        ConsumerConfig conConfig = new ConsumerConfig(props);
-        consumerConnector = Consumer.createJavaConsumerConnector(conConfig);
+/**
+ * Consumer can be specialize the data it consumes.
+ * Initialize method can be also override.
+ *
+ * Created by alozta on 8/16/16.
+ */
+public class ConsumerTest extends iConsumer {
+
+    public ConsumerTest(){
+        super();
     }
 
-    public void consume() {
+    /**
+     * This method can be manipulated to the needs.
+     * */
+    @Override
+    public void consume(){
         //Key = topic name, Value = No. of threads for topic
         Map<String, Integer> topicCount = new HashMap<String, Integer>();
         topicCount.put(topic, new Integer(1));
@@ -47,14 +41,15 @@ public class ConsumerTest {
 
             while (consumerIte.hasNext())
                 System.out.println("Message consumed from topic[" + topic + "] : "       +
-                                                new String(consumerIte.next().message()));
+                        new String(consumerIte.next().message()));
         }
         //Shutdown the consumer connector
         if (consumerConnector != null)   consumerConnector.shutdown();
     }
 
+
     public static void main(String[] args) throws InterruptedException {
-        ConsumerTest kafkaConsumer = new ConsumerTest();
+        iConsumer kafkaConsumer = new ConsumerTest();
         kafkaConsumer.initialize();         // Configure Kafka consumer
         kafkaConsumer.consume();            // Start consumption
     }

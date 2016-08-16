@@ -14,7 +14,7 @@
  * bin/kafka-server-start.sh config/server.properties
  *
  * Then:
- * Run it can be run ProducerTest & ConsumerTest
+ * Run iProducer & ConsumerTest
  *
  * Sending message:
  * childClass.send("this is a test message.");
@@ -33,7 +33,7 @@ import java.util.Properties;
 import java.util.Scanner;
 
 
-public abstract class iProducer {
+public class iProducer {
 
     Producer<String, String> producer;
     String topic="notification";
@@ -134,6 +134,12 @@ public abstract class iProducer {
      */
     public void send(String msg){
         producer.send(new KeyedMessage<String, String>(topic, msg));
+    }
+
+
+    public static void main(String [] args){
+        iProducer myProcuder = new iProducer();
+        myProcuder.Producer();
     }
 }
 
